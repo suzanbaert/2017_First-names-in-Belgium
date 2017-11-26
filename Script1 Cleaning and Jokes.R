@@ -55,7 +55,7 @@ head(data)
 
 
 #writing clean datafile
-write.csv("First names in Belgium 1995-2016 cleaned")
+write.csv(data, "First names in Belgium 1995-2016 cleaned.csv")
 
 
 #Searching for Joke
@@ -70,8 +70,6 @@ Joke <- Joke %>%
   rbind(list("Total Belgium", 2014, "Girls", "Joke", 0)) %>% 
   rbind(list("Total Belgium", 2015, "Girls", "Joke", 0)) %>% 
   rbind(list("Total Belgium", 2016, "Girls", "Joke", 0)) 
-
-
 
 #Plotting Jokes
 ggplot(data=Joke2, aes(Year, Count))+
