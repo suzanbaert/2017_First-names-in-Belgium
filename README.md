@@ -9,7 +9,7 @@ Belgian government ([data link](http://statbel.fgov.be/nl/modules/publ2ications/
 Data
 ----
 
-Data came in the form of two excel files, one for girls and one for boys. Every file contains a sheet for every year, and then numbers per region per name.
+Data came in the form of two excel files, one for girls and one for boys. Every file contains a sheet for every year (1995-2016), and then numbers per region per name.
 
 Original data file contains the numbers for Belgium as a whole, and for every region seperate (Flander, Wallonia and Brussels). Only the Belgian data is pulled out into the clean file right now.
 
