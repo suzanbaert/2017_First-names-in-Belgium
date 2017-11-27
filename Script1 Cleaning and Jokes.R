@@ -2,6 +2,7 @@ library(readxl)
 library(tidyr)
 library(dplyr)
 library(ggplot2)
+library(rebus)
 
 
 #Importing files
@@ -101,10 +102,25 @@ ggplot(data_girls)+
 
 
 
-#Double plots
+#Double plots for Mathilde
 ggplot(data_girls, aes(Year, Count, shape=Name))+
   geom_line(color="#CFCCCF", show.legend=FALSE)+
   geom_line(data=subset(data_girls, Name=="Mathilde"),color="#88398A", size=1)+
   labs(yl="Number of occurences", title="Girls born with the name Mathilde in Belgium")+
   theme(plot.title = element_text(colour = "#88398A"))
 
+#Double plots for Joke
+ggplot(data_girls, aes(Year, Count, shape=Name))+
+  geom_line(color="#CFCCCF", show.legend=FALSE)+
+  geom_line(data=subset(data_girls, Name=="Joke"),color="#88398A", size=1)+
+  labs(yl="Number of occurences", title="Girls born with the name Joke in Belgium")+
+  theme(plot.title = element_text(colour = "#88398A"))
+
+
+#Suzan and variants
+suzan<-filter(data_girls, Name=="Suzan"|Name=="Suzanne")
+ggplot(data_girls, aes(Year, Count, shape=Name))+
+  geom_line(color="#CFCCCF", show.legend=FALSE)+
+  geom_line(data=suzan,color="#88398A", size=1)+
+  labs(yl="Number of occurences", title="Girls born with the name Suzan in Belgium")+
+  theme(plot.title = element_text(colour = "#88398A"))
