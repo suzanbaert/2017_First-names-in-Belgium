@@ -43,7 +43,7 @@ for (i in sheetnames_girls) {
 }
 
 data_b <- data.frame()
-for (i in sheetnames_girls) {
+for (i in sheetnames_boys) {
   data_b <- bind_rows(data_b,read_excelsheet(file_boys, i))
 }
 
