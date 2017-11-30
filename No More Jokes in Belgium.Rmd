@@ -1,28 +1,31 @@
 ---
-title: "No More Jokes in Belgium"
-output:
-  html_document: default
-  word_document: default
+title: "Any Joke's left in Belgium?"
+output: html_document
 ---
 
-### What I was curious about: are there still Joke's born?
+<br>
+
+## What I was wondering: are there still Joke's born in Belgium?
 Everytime I pass by a colleague named Joke, I wonder. 
-Joke is quite regular Dutch first name for a girl. You pronounce it [yo-ke], like blending 'yoghurt' and 'kebab' together and put the accent on the 'yo'. No-one who grew up speaking Dutch would bat an eye to hear about someone named Joke, but everyone else on this planet probably would.
-Given the importance of English in our daily culture and business world I wondered whether there were any parents that would still name their daughter Joke, considering how it sounds in English.
+Let me explain: Joke is quite regular Dutch first name for a girl. You pronounce it [yo-ke], like blending 'yoghurt' and 'kebab' together and put the accent on the 'yo'. No-one who grew up speaking Dutch would bat an eye to hear about someone named Joke, but everyone else on this planet probably would.
+Considering how this name sounds in English and how important English as a language has become in our daily life and business world, I wondered whether there were any parents that would still name their daughter Joke...
+<br><br>
 
 ## Data source
 I found everything I needed on ([this website](http://statbel.fgov.be/nl/modules/publ2ications/statistiques/bevolking/bevolking_-_voornamen_van_de_pasgeborenen_1995-2014.jsp)) from the Belgian government.
-
+<br><br>
 
 ## Data
-Data came in the form of two excel files, one for girls and one for boys.
-Every file contains a sheet for every year (1995-2016), and then numbers per region per name (see picture below). Not ideal, but we'll take care of that in the cleaning.
+The data came in the form of two excel files, one for girls and one for boys.
+Every file contains a sheet for every year (1995-2016), and then numbers per region per name (see picture below). Not ideal, but nothing that some cleaning up can't handle.<br>
 ![Original data structure](Screenshot Original Excel.png)
+<br>
 
-Two quick notes:
+Two quick notes before I move on:
 
-* Original data file contains the numbers for Belgium as a whole, and for every region seperate (Flander, Wallonia and Brussels). Only the Belgian data is pulled out into the clean file right now.
+* Original data file contains the numbers for Belgium as a whole, and for every region seperate (Flanders, Wallonia and Brussels). Only the Belgian data is pulled out into the clean file right now.
 * No names below 5 occurences are present in the database, presumably for privacy reasons.
+<br><br>
 
 ## Cleaning data
 Starting by loading the packages needed:
@@ -33,8 +36,8 @@ library(dplyr)
 library(ggplot2)
 ```
 
-<br>
-Next importing the files. 
+<br><br>
+Given that both files contained many different sheets representing the years, I started by creating a variable that would hold all the sheetnames.  
 ```{r}
 #Importing files
 file_girls <- "First names girls 1995-2016.xls"
@@ -44,8 +47,8 @@ sheetnames_boys <- excel_sheets(file_girls) [1:22]
 ```
 
 
-<br>
-Next I wanted to build a function to read all those sheets and bind the data together. I typically first write the code for one sheet before turning it into a function. At least then I know everything works like i want it to.
+<br><br>
+I wanted to build a function that would read all those sheets and bind the data together. I first wrote the code for one sheet before turning it into a function. At least then I know everything works the way I want it to.
 
 ```{r eval=FALSE}
 #Trial set to build up the function later on
@@ -55,10 +58,10 @@ data1995$Year <- 1995L
 data1995$Region <- "Total Belgium"
 ``` 
 
-<br>
-Then I turned that into the actual function, which: 
+<br><br>
+Time to build the actual function, which: 
 * Reads a worksheet from the excel file 
-* Retains only column two and three which represents the names and number of occurences 
+* Retains only column two and three which represents the names and number of occurences for total Belgium.
 * Turns the sheetname into a variable called Year
 * And adds a variable region "Total Belgium"
 
@@ -73,23 +76,23 @@ read_excelsheet <- function (file, sheetname) {
 }
 ```
 
-<br>
-With the function r read_excelsheet set up, it's time to start reading in the data. I used a for loop to go through all the sheetnames defined in r sheetnames_girls and bind every new data to the previous ones.
+<br><br>
+With the function read_excelsheet up and working, it's time to start reading in the data. I used a for loop to go through all the sheetnames defined in sheetnames_girls and bind every new data to the previous ones. Afterwards I did the exact same thing for the boys.
 ```{r}
 #Reading all sheets 
 data_g <- data.frame()
 for (i in sheetnames_girls) {
-  data_g <- bind_rows(data_g,read_excelsheet(file_girls, i))
+  data_g <- bind_rows(data_g, read_excelsheet(file_girls, i))
 }
 
 data_b <- data.frame()
 for (i in sheetnames_boys) {
-  data_b <- bind_rows(data_b,read_excelsheet(file_boys, i))
+  data_b <- bind_rows(data_b, read_excelsheet(file_boys, i))
 }
 ```
 
 
-<br>
+<br><br>
 Nearly there. I combined the girls and boys data, and did some touching up by changing column names and changing their order.
 ```{r}
 #Combine girls and boys in 1 database
@@ -105,31 +108,43 @@ rm(data_g)
 ```
 
 
-<br>
-Cleaning is all done now! For anyone who does not want to go through the cleaning, I added a cleaned file via r write.csv into ([my github repository](https://github.com/suzanbaert/PP1---First-names-in-Belgium)).
-´´´{r}
+<br><br>
+Cleaning is all done now! For anyone who does not want to go through the cleaning, I added a cleaned file via write.csv into ([my github repository](https://github.com/suzanbaert/PP1---First-names-in-Belgium)). The cleaned data now looks as following:
+```{r echo=FALSE}
 head(data)
 ```
 
-## Searching for Joke
+<br><br>
 
+## Searching for Joke
+With the cleaning done, it's time to find out whether there are any Joke's left in Belgium.
+
+```{r}
 #Searching for Joke
 Joke <- filter(data, Name=="Joke")
 Joke %>% 
   group_by (Year) %>% 
   summarise(Count)
+```
+<br><br>
 
+It's pretty obvious that the number of Joke's has dropped significantly. The summary table above does not show any data for 2013-2016, so I will add zero's manually to show in the graph below that we have data past 2012. Given that no data is present for names that are given less than 5 times, this might not be entirely correct though.
+
+```{r}
 #Adding empty rows until 2016
-Joke2 <- Joke %>%
+Joke <- Joke %>%
   rbind(list("Total Belgium", 2013, "Girls", "Joke", 0)) %>% 
   rbind(list("Total Belgium", 2014, "Girls", "Joke", 0)) %>% 
   rbind(list("Total Belgium", 2015, "Girls", "Joke", 0)) %>% 
   rbind(list("Total Belgium", 2016, "Girls", "Joke", 0)) 
-
-
-
+```
+<br><br>
+## The answer
+In 1995 the world was not yet very global and about 100 Joke's were born that year, but since then it's been decreasing year after year. The last few years, it's been less than 5 a year.<br><br>
+```{r echo=FALSE}
 #Plotting Jokes
 ggplot(data=Joke, aes(Year, Count))+
   geom_line(color="#88398A", size=1)+
   labs(y="Number of occurences", title="Girls born with the name Joke in Belgium")+
   theme(plot.title = element_text(colour = "#88398A"))
+```

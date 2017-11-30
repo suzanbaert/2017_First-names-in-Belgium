@@ -67,7 +67,7 @@ Joke %>%
   summarise(Count)
 
 #Adding empty rows until 2016
-Joke2 <- Joke %>%
+Joke <- Joke %>%
   rbind(list("Total Belgium", 2013, "Girls", "Joke", 0)) %>% 
   rbind(list("Total Belgium", 2014, "Girls", "Joke", 0)) %>% 
   rbind(list("Total Belgium", 2015, "Girls", "Joke", 0)) %>% 
