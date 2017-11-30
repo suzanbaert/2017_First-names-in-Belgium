@@ -139,6 +139,7 @@ Joke <- Joke %>%
   rbind(list("Total Belgium", 2016, "Girls", "Joke", 0)) 
 ```
 <br><br>
+
 ## The answer
 In 1995 the world was not yet very global and about 100 Joke's were born that year, but since then it's been decreasing year after year. The last few years, it's been less than 5 a year.<br><br>
 ```{r echo=FALSE}
