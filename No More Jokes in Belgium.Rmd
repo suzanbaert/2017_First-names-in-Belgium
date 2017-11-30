@@ -1,10 +1,14 @@
 ---
 title: "No More Jokes in Belgium"
-output: html_document
+output:
+  html_document: default
+  word_document: default
 ---
 
-### What I wanted to know: are there still Joke's born?
-Joke is quite regular Dutch first name for a girl. You pronounce it [yo-ke], like blending 'yoghurt' and 'kebab' together and put the accent on the 'yo'. Given the importance of English in our daily culture and business world I wondered whether there were any parents that would still name their daughter Joke, considerin how it sounds in English.
+### What I was curious about: are there still Joke's born?
+Everytime I pass by a colleague named Joke, I wonder. 
+Joke is quite regular Dutch first name for a girl. You pronounce it [yo-ke], like blending 'yoghurt' and 'kebab' together and put the accent on the 'yo'. No-one who grew up speaking Dutch would bat an eye to hear about someone named Joke, but everyone else on this planet probably would.
+Given the importance of English in our daily culture and business world I wondered whether there were any parents that would still name their daughter Joke, considerin how it sounds in English.
 
 ## Data source
 I found everything I needed on ([this website](http://statbel.fgov.be/nl/modules/publ2ications/statistiques/bevolking/bevolking_-_voornamen_van_de_pasgeborenen_1995-2014.jsp)) from the Belgian government.
@@ -33,7 +37,6 @@ library(ggplot2)
 Next importing the files. 
 ```{r}
 #Importing files
-setwd("E:/R projects/01 Belgie namen/No More Joke's - First names in Belgium")
 file_girls <- "First names girls 1995-2016.xls"
 sheetnames_girls <- excel_sheets(file_girls) [1:22]
 file_boys <- "First names boys 1995-2016.xls"
@@ -70,9 +73,8 @@ read_excelsheet <- function (file, sheetname) {
 }
 ```
 
-
 <br>
-With the function `r read_excelsheet` set up, it's time to start reading in the data. I used a for loop to go through all the sheetnames defined in `r sheetnames_girls` and bind every new data to the previous ones.
+With the function r read_excelsheet set up, it's time to start reading in the data. I used a for loop to go through all the sheetnames defined in r sheetnames_girls and bind every new data to the previous ones.
 ```{r}
 #Reading all sheets 
 data_g <- data.frame()
@@ -104,7 +106,7 @@ rm(data_g)
 
 
 <br>
-Cleaning is all done now! For anyone who does not want to go through the cleaning, I added a cleaned file via `r write.csv`into ([my github repository](https://github.com/suzanbaert/PP1---First-names-in-Belgium)).
+Cleaning is all done now! For anyone who does not want to go through the cleaning, I added a cleaned file via r write.csv into ([my github repository](https://github.com/suzanbaert/PP1---First-names-in-Belgium)).
 ´´´{r}
 head(data)
 ```

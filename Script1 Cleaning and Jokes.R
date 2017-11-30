@@ -2,7 +2,6 @@ library(readxl)
 library(tidyr)
 library(dplyr)
 library(ggplot2)
-library(rebus)
 
 
 #Importing files
@@ -11,6 +10,7 @@ file_girls <- "First names girls 1995-2016.xls"
 sheetnames_girls <- excel_sheets(file_girls) [1:22]
 file_boys <- "First names boys 1995-2016.xls"
 sheetnames_boys <- excel_sheets(file_girls) [1:22]
+
 
 #Trial set to build up the function later on
 # input1995 <- read_excel(file, "1995")
