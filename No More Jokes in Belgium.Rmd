@@ -1,13 +1,13 @@
 ---
 title: "Any Joke's left in Belgium?"
-output: html_document
+output: md_document
 ---
 
 <br>
 
 ## What I was wondering: are there still Joke's born in Belgium?
-Everytime I pass by a colleague named Joke, I wonder. 
-Let me explain: Joke is quite regular Dutch first name for a girl. You pronounce it [yo-ke], like blending 'yoghurt' and 'kebab' together and put the accent on the 'yo'. No-one who grew up speaking Dutch would bat an eye to hear about someone named Joke, but everyone else on this planet probably would.
+Every time I pass by a colleague named Joke, I wonder. 
+Let me explain: Joke is quite regular Dutch first name for a girl. You pronounce it [yo-ke], like blending 'yoghurt' and 'kebab' together and put the accent on the 'yo'. 'Joke' is just a diminutive form of Jo, kind of like Jenny, Abby and Debby. No-one who grew up speaking Dutch would bat an eye to hear about someone named Joke, but everyone else on this planet probably would.<br><br>
 Considering how this name sounds in English and how important English as a language has become in our daily life and business world, I wondered whether there were any parents that would still name their daughter Joke...
 <br><br>
 
@@ -23,7 +23,7 @@ Every file contains a sheet for every year (1995-2016), and then numbers per reg
 
 Two quick notes before I move on:
 
-* Original data file contains the numbers for Belgium as a whole, and for every region seperate (Flanders, Wallonia and Brussels). Only the Belgian data is pulled out into the clean file right now.
+* The original data file contains the numbers for Belgium as a whole, and for every region seperate (Flanders, Wallonia and Brussels). Only the Belgian data is pulled out into the clean file right now.
 * No names below 5 occurences are present in the database, presumably for privacy reasons.
 <br><br>
 
@@ -53,13 +53,14 @@ I wanted to build a function that would read all those sheets and bind the data 
 ```{r eval=FALSE}
 #Trial set to build up the function later on
 input1995 <- read_excel(file, "1995")
-data1995<- input1995[,2:3]
+data1995 <- input1995[,2:3]
 data1995$Year <- 1995L
 data1995$Region <- "Total Belgium"
 ``` 
 
 <br><br>
 Time to build the actual function, which: 
+
 * Reads a worksheet from the excel file 
 * Retains only column two and three which represents the names and number of occurences for total Belgium.
 * Turns the sheetname into a variable called Year
@@ -102,7 +103,7 @@ data <- data.frame(bind_rows(data_g, data_b))
 
 #Renaming columns and clean-up
 colnames(data)[1:2] <- c("Name", "Count")
-data<- select(data, Region, Year, Gender, Name, Count)
+data <- select(data, Region, Year, Gender, Name, Count)
 rm(data_b)
 rm(data_g)
 ```
@@ -142,10 +143,37 @@ Joke <- Joke %>%
 
 ## The answer
 In 1995 the world was not yet very global and about 100 Joke's were born that year, but since then it's been decreasing year after year. The last few years, it's been less than 5 a year.<br><br>
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE}
 #Plotting Jokes
 ggplot(data=Joke, aes(Year, Count))+
   geom_line(color="#88398A", size=1)+
-  labs(y="Number of occurences", title="Girls born with the name Joke in Belgium")+
+  labs(y="Number of births", title="Girls born with the name Joke in Belgium")+
   theme(plot.title = element_text(colour = "#88398A"))
 ```
+
+<br><br>
+The previous plot does not show anything in how it compares to other names though. So I made a second graph: Every grey line represents a girls' name, and Joke is in purple. It never was a hugely popular name, but still far from being negligible either.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Plotting Jokes along all other names
+data_girls<-subset(data, Gender=="Girls")
+ggplot(data_girls, aes(Year, Count, shape=Name))+
+  geom_line(color="#CFCCCF", show.legend=FALSE)+
+  geom_line(data=Joke,color="#88398A", size=1)+
+  labs(y="Number of births", title="Girls born with the name Joke in Belgium")+
+  theme(plot.title = element_text(colour = "#88398A"))
+```
+
+<br><br> 
+There are a lot of other interesting things in this database, but I just want to highlight one other thing: there was one curve that caught my eye because it's very abrupt demise. <br>
+Mathilde is the name of the current Queen of Belgium. She became engaged to our crown prince Filip back in 1999. Not everything Royal starts a copycat movement - or at least not in Belgium. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Plotting Mathilde along all other names
+ggplot(data_girls, aes(Year, Count, shape=Name))+
+  geom_line(color="#CFCCCF", show.legend=FALSE)+
+  geom_line(data=subset(data_girls, Name=="Mathilde"),color="#88398A", size=1)+
+  labs(y="Number of births", title="Girls born with the name Mathilde in Belgium")+
+  theme(plot.title = element_text(colour = "#88398A"))
+```
+

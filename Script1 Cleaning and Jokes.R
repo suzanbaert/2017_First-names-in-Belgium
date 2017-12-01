@@ -36,6 +36,7 @@ read_excelsheet <- function (file, sheetname) {
   return(data)
 }
 
+
 #Reading all sheets 
 data_g <- data.frame()
 for (i in sheetnames_girls) {
@@ -78,14 +79,14 @@ Joke <- Joke %>%
 #Plotting Jokes
 ggplot(data=Joke, aes(Year, Count))+
   geom_line(color="#88398A", size=1)+
-  labs(y="Number of occurences", title="Girls born with the name Joke in Belgium")+
+  labs(y="Number of births", title="Girls born with the name Joke in Belgium")+
   theme(plot.title = element_text(colour = "#88398A"))
 
 
 #Plotting Mathilde
 ggplot(data=subset(data_girls, Name=="Mathilde"), aes(Year, Count))+
   geom_line(color="#88398A")+
-  labs(yl="Number of occurences", title="Girls born with the name Mathilde in Belgium")+
+  labs(yl="Number of births", title="Girls born with the name Mathilde in Belgium")+
   theme(plot.title = element_text(colour = "#88398A"))
 
 
@@ -106,14 +107,20 @@ ggplot(data_girls)+
 ggplot(data_girls, aes(Year, Count, shape=Name))+
   geom_line(color="#CFCCCF", show.legend=FALSE)+
   geom_line(data=subset(data_girls, Name=="Mathilde"),color="#88398A", size=1)+
-  labs(yl="Number of occurences", title="Girls born with the name Mathilde in Belgium")+
+  labs(y="Number of births", title="Girls born with the name Mathilde in Belgium")+
   theme(plot.title = element_text(colour = "#88398A"))
 
 #Double plots for Joke
 ggplot(data_girls, aes(Year, Count, shape=Name))+
   geom_line(color="#CFCCCF", show.legend=FALSE)+
   geom_line(data=subset(data_girls, Name=="Joke"),color="#88398A", size=1)+
-  labs(yl="Number of occurences", title="Girls born with the name Joke in Belgium")+
+  labs(y="Number of births", title="Girls born with the name Joke in Belgium")+
+  theme(plot.title = element_text(colour = "#88398A"))
+
+ggplot(data_girls, aes(Year, Count, shape=Name))+
+  geom_line(color="#CFCCCF", show.legend=FALSE)+
+  geom_line(data=Joke,color="#88398A", size=1)+
+  labs(y="Number of births", title="Girls born with the name Joke in Belgium")+
   theme(plot.title = element_text(colour = "#88398A"))
 
 
@@ -122,5 +129,5 @@ suzan<-filter(data_girls, Name=="Suzan"|Name=="Suzanne")
 ggplot(data_girls, aes(Year, Count, shape=Name))+
   geom_line(color="#CFCCCF", show.legend=FALSE)+
   geom_line(data=suzan,color="#88398A", size=1)+
-  labs(yl="Number of occurences", title="Girls born with the name Suzan in Belgium")+
+  labs(y="Number of births", title="Girls born with the name Suzan in Belgium")+
   theme(plot.title = element_text(colour = "#88398A"))
