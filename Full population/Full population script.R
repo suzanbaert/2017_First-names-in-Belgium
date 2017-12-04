@@ -4,6 +4,7 @@ setwd("E:/R projects/PP1---First-names-in-Belgium")
 library(readxl)
 library(tidyr)
 library(dplyr)
+library(ggplot2)
 
 
 #importing data
@@ -24,20 +25,31 @@ read_data<- function(filename, column, gender, agegroup) {
 
 
 #running the function fo all agegroups and genders
-data <- read_data(data_men, 15, "Men", "<18y")
-data <- bind_rows(data, read_data(data_men, 18, "Men", "18-64y"))
-data <- bind_rows(data, read_data(data_men, 21, "Men", ">65y"))
-data <- bind_rows(data, read_data(data_women, 15, "Women", "<18y"))
-data <- bind_rows(data, read_data(data_women, 18, "Women", "18-64y"))
-data <- bind_rows(data, read_data(data_women, 21, "Women", ">65y"))
+data <- read_data(data_men, 15, "Men", "minus18")
+data <- bind_rows(data, read_data(data_men, 18, "Men", "18to64"))
+data <- bind_rows(data, read_data(data_men, 21, "Men", "plus65"))
+data <- bind_rows(data, read_data(data_women, 15, "Women", "minus18"))
+data <- bind_rows(data, read_data(data_women, 18, "Women", "18to64"))
+data <- bind_rows(data, read_data(data_women, 21, "Women", "plus65"))
 
 #clean data file
 data <- select(data, Gender, Agegroup, Name, Count)
+data <- na.omit(data)
 write.csv(data, "Cleaned file - First names Belgian Population anno 2013.csv")
 
+#clean up workspace
+rm(data_women)
+rm(data_men)
 
-#calculation proportions
-data %>%
-  filter(Gender=="Women")%>%
-  group_by(Agegroup) %>%
-  summarise(sum=sum(Count))
+
+#getting ready for plotting
+#need a wide dataframe to enable comparisons
+data_wide <- data %>% 
+  spread(Agegroup, Count)
+data_wide_nilNA <- na.omit(data_wide)
+
+
+#ggplot
+ggplot(data = subset(data_wide_nilNA, Gender=="Women"), aes(x=minus18, y=plus65, label=Name))+
+  geom_point()+
+  geom_text(nudge_x=800)
